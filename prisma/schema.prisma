@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model JoinForm {
+  id                 String   @id
+  firstName          String
+  middleName         String?
+  lastName           String
+  organizationToJoin String
+  province           String
+  district           String
+  municipality       String
+  ward               Int
+  street             String?
+  department         String
+  position           String
+  subject            String?
+  licenseNo          String?
+  experience         Int?
+  email              String   @unique
+  phone              String
+  organization       String?
+  message            String?
+  availableFor       String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime
+  approved           Boolean
+  approvedAt         DateTime?
+  personId           String?
+}
+
+model person {
+  id String @id @default(uuid())
+  firstName String
+  lastName String
+  phone String
+  email String
+  affiliatedOrganization String
+  joinDate DateTime
+}
+
+
+model UserAuth {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  passwordHash      String
+  name              String
+  role              String   @default("org_admin") // "super_admin" or "org_admin"
+  organization      String?  // Only required for org_admin
+  createdAt         DateTime @default(now())
+  lastLogin         DateTime?
+}
